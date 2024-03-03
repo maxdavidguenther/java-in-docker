@@ -5,14 +5,29 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Input;
 
+/**
+ * Removes the docker container with the name of {@link #getContainerName()} with {@code --force}.
+ */
 public abstract class RemoveContainerTask extends Exec {
 
+  /**
+   * The name of the container to remove.
+   *
+   * @return the name of the container
+   */
   @Input()
   public abstract Property<String> getContainerName();
+
+  /**
+   * Create the task.
+   */
+  @Inject
+  public RemoveContainerTask() {}
 
   @Override
   public void exec() {

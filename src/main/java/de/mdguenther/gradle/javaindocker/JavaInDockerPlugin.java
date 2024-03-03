@@ -6,12 +6,32 @@ import java.util.List;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+/**
+ * Provides the Java in Docker Gradle plugin.
+ *
+ * <p>
+ *   Three tasks are supplied:
+ *   <ul>
+ *     <li>{@code removeContainer} - Removes the container named
+ *     {@code javaInDocker.containerName}</li>
+ *     <li>{@code stopService} - Stops the docker compose service with the name
+ *     {@code javaInDocker.serviceName}</li>
+ *     <li>{@code runInDocker} - Executes the above two tasks and then runs the application
+ *     identified by {@code mainClassName} or by the file {@code resolvedMainClassName} in the
+ *     Gradle build directory (supplied by the Gradle plugin {@code org.springframework.boot}).</li>
+ *   </ul>
+ */
 public class JavaInDockerPlugin implements Plugin<Project> {
   private static final String TASK_GROUP = "java in docker";
   private static final String TASK_REMOVE_CONTAINER = "removeContainer";
   private static final String TASK_STOP_SERVICE = "stopService";
   private static final String TASK_RUN_IN_DOCKER = "runInDocker";
   private static final String TASK_COMPILE_JAVA = "compileJava";
+
+  /**
+   * Create the plugin.
+   */
+  public JavaInDockerPlugin() { }
 
   @Override
   public void apply(final Project target) {

@@ -5,17 +5,37 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Input;
 
+/**
+ * Service that stops a service defined by a {@code docker-compose.yml}.
+ */
 public abstract class StopServiceTask extends Exec {
 
+  /**
+   * The path to the {@code docker-compose.yml} relative to the project directory.
+   *
+   * @return the name of the {@code docker-compose.yml}
+   */
   @Input()
   public abstract Property<String> getDockerComposeFile();
 
+  /**
+   * The name of the service to stop as defined in the {@code docker-compose.yml}.
+   *
+   * @return the name of the service
+   */
   @Input()
   public abstract Property<String> getServiceName();
+
+  /**
+   * Create the task.
+   */
+  @Inject
+  public StopServiceTask() {}
 
   @Override
   public void exec() {

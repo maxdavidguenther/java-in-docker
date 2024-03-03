@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.inject.Inject;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
@@ -15,30 +16,79 @@ import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.SourceSet;
 
+/**
+ * Runs Java in a Docker Compose container via {@code docker compose run}.
+ */
 public abstract class JavaInDockerTask extends Exec {
 
+  /**
+   * The path to the {@code docker-compose.yml} relative to the project path.
+   *
+   * @return the path to {@code docker-compose.yml}
+   */
   @Optional
   @Input()
   public abstract Property<String> getDockerComposeFile();
 
+  /**
+   * The name of the application service in the {@code docker-compose.yml} that is to be replaced by
+   * Java in Docker.
+   *
+   * @return the name of the application service
+   */
   @Input()
   public abstract Property<String> getServiceName();
 
+  /**
+   * The name of the Docker container in the {@code docker-compose.yml} that is given to the
+   * container.
+   *
+   * @return the name of the docker container
+   */
   @Input()
   public abstract Property<String> getContainerName();
 
+  /**
+   * Any additional arguments that to be supplied to {@code docker compose run}.
+   *
+   * @return the additional {@code docker compose run} arguments
+   */
   @Optional
   @Input()
   public abstract ListProperty<String> getAdditionalDockerRunArgs();
 
+  /**
+   * The name of the main class that is run {@code java -cp <classpath> <mainClassName>}. Must be
+   * a fully qualified name of the class, of course!
+   *
+   * @return the name of the main class.
+   */
   @Input()
   public abstract Property<String> getMainClassName();
 
+  /**
+   * The path of the directory inside the Docker container where the Gradle build directory
+   * is mounted to as a volume. <em>Default:</em> {@code /gradle}
+   *
+   * @return the path to the build directory inside the Docker container
+   */
   @Input()
   public abstract Property<String> getContainerBuildDir();
 
+  /**
+   * The path of the directory inside the Docker container where the Gradle user home directory
+   * is mounted to as a volume. <em>Default:</em> {@code /build}
+   *
+   * @return the path to the build directory inside the Docker container
+   */
   @Input()
   public abstract Property<String> getContainerGradleUserHome();
+
+  /**
+   * Create the task.
+   */
+  @Inject
+  public JavaInDockerTask() { }
 
   @Override
   public void exec() {

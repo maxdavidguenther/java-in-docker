@@ -19,7 +19,7 @@ Of course, you will likely have many more services, like your database. These al
 
 plugins {
   id 'java'
-  id 'de.mdguenther.gradle.javaindocker' version '0.0.1'
+  id 'de.mdguenther.gradle.java-in-docker' version '0.0.1'
 }
 
 javaInDocker {

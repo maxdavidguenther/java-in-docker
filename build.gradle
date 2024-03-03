@@ -2,7 +2,7 @@
 
 plugins {
   id 'java-gradle-plugin'
-  id 'maven-publish'
+  id 'com.gradle.plugin-publish' version '1.2.1'
   id 'idea'
 }
 
@@ -28,14 +28,20 @@ test {
   useJUnitPlatform()
 }
 
-description = ""
+
 group = 'de.mdguenther.gradle'
-version = '1.0.0'
+version = '0.0.1'
 
 gradlePlugin {
+  website = 'https://github.com/maxdavidguenther/java-in-docker'
+  vcsUrl = 'https://github.com/maxdavidguenther/java-in-docker.git'
   plugins {
-    javaindocker {
-      id = 'de.mdguenther.gradle.javaindocker'
+    javaInDocker {
+      id = 'de.mdguenther.gradle.java-in-docker'
+      displayName = 'Java in Docker'
+      description = "Run java in docker container with automatic reloading from Spring Boot Developer " +
+        "tools while 'gradle build --continuously' runs in the background."
+      tags.set(['docker', 'docker compose', 'Spring Boot', 'continuously'])
       implementationClass = 'de.mdguenther.gradle.javaindocker.JavaInDockerPlugin'
     }
   }
