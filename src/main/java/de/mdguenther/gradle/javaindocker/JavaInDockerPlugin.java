@@ -2,6 +2,7 @@ package de.mdguenther.gradle.javaindocker;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
@@ -44,8 +45,10 @@ public class JavaInDockerPlugin implements Plugin<Project> {
       task.getDockerComposeFile().set(extension.getDockerComposeFile());
       task.getServiceName().set(extension.getServiceName());
       task.getContainerName().set(extension.getContainerName());
+      task.getAdditionalDockerRunArgs().set(extension.getAdditionalDockerRunArgs());
       task.getContainerBuildDir().convention("/build");
       task.getContainerGradleUserHome().convention("/gradle");
+      task.getAdditionalDockerRunArgs().convention(List.of("--service-ports"));
 
       if (!task.getMainClassName().isPresent()) {
         final String mainClassName = tryDetectMainClassName(target);

@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.gradle.api.plugins.JavaPluginExtension;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Input;
@@ -25,6 +26,10 @@ public abstract class JavaInDockerTask extends Exec {
 
   @Input()
   public abstract Property<String> getContainerName();
+
+  @Optional
+  @Input()
+  public abstract ListProperty<String> getAdditionalDockerRunArgs();
 
   @Input()
   public abstract Property<String> getMainClassName();
@@ -50,7 +55,7 @@ public abstract class JavaInDockerTask extends Exec {
     args.add("--name");
     args.add(getContainerName().get());
 
-    args.add("--service-ports");
+    args.addAll(getAdditionalDockerRunArgs().get());
 
     final String buildDir = getProject().getLayout().getBuildDirectory().get().toString();
     args.add("-v");
