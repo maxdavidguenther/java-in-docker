@@ -6,10 +6,11 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 public class JavaInDockerPlugin implements Plugin<Project> {
-  private static final String TASK_GROUP = "run in docker";
+  private static final String TASK_GROUP = "java in docker";
   private static final String TASK_REMOVE_CONTAINER = "removeContainer";
   private static final String TASK_STOP_SERVICE = "stopService";
   private static final String TASK_RUN_IN_DOCKER = "runInDocker";
+  private static final String TASK_COMPILE_JAVA = "compileJava";
 
   @Override
   public void apply(final Project target) {
@@ -36,8 +37,10 @@ public class JavaInDockerPlugin implements Plugin<Project> {
     target.getTasks().register(TASK_RUN_IN_DOCKER, JavaInDockerTask.class).configure(task -> {
       task.setGroup(TASK_GROUP);
       task.dependsOn(
+        target.getTasks().getByName(TASK_COMPILE_JAVA),
         target.getTasks().getByName(TASK_REMOVE_CONTAINER),
-        target.getTasks().getByName(TASK_STOP_SERVICE));
+        target.getTasks().getByName(TASK_STOP_SERVICE)
+      );
       task.getDockerComposeFile().set(extension.getDockerComposeFile());
       task.getServiceName().set(extension.getServiceName());
       task.getContainerName().set(extension.getContainerName());

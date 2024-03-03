@@ -1,15 +1,18 @@
 package de.mdguenther.gradle.javaindocker;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.SourceSet;
 
 public abstract class JavaInDockerTask extends Exec {
 
@@ -64,10 +67,25 @@ public abstract class JavaInDockerTask extends Exec {
 
     final String gradleDir = getProject().getGradle().getGradleUserHomeDir().getAbsolutePath();
 
+    final JavaPluginExtension javaExtension = getProject().getExtensions().getByType(JavaPluginExtension.class);
+    final SourceSet mainSourceSet = javaExtension.getSourceSets().stream()
+        .filter(SourceSet::isMain).findAny()
+        .orElseThrow(() -> new JavaInDockerException("main source set is missing"));
+    final Path buildPath = getProject().getLayout().getBuildDirectory().getLocationOnly()
+      .map(d -> d.getAsFile().toPath()).get();
+    final Stream<Path> classesPaths = mainSourceSet.getOutput().getClassesDirs().getFiles().stream()
+      .map(f -> buildPath.relativize(f.toPath()))
+      .map(p -> Paths.get(getContainerBuildDir().get()).resolve(p));
+    final Stream<Path> resourcePaths = java.util.Optional.ofNullable(
+      mainSourceSet.getOutput().getResourcesDir()
+    ).stream()
+      .map(f -> buildPath.relativize(f.toPath()))
+      .map(p -> Paths.get(getContainerBuildDir().get()).resolve(p));
+
     final String classpathArg = Stream.concat(
-      Stream.of(
-        Paths.get(getContainerBuildDir().get(), "classes/java/main").toString(),
-        Paths.get(getContainerBuildDir().get(), "resources/main").toString()
+      Stream.concat(
+        classesPaths.map(Path::toString),
+        resourcePaths.map(Path::toString)
       ),
       getProject().getConfigurations()
         .getByName("runtimeClasspath")

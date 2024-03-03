@@ -7,13 +7,13 @@ import org.gradle.api.tasks.Optional;
 public interface JavaInDockerExtension {
 
   @Input()
-  public abstract Property<String> getServiceName();
+  Property<String> getServiceName();
 
   @Optional
   @Input()
-  public abstract Property<String> getDockerComposeFile();
+  Property<String> getDockerComposeFile();
 
   @Optional
   @Input()
-  public abstract Property<String> getContainerName();
+  Property<String> getContainerName();
 }
