@@ -27,6 +27,7 @@ public class JavaInDockerPlugin implements Plugin<Project> {
   private static final String TASK_STOP_SERVICE = "stopService";
   private static final String TASK_RUN_IN_DOCKER = "runInDocker";
   private static final String TASK_COMPILE_JAVA = "compileJava";
+  private static final String TASK_PROCESS_RESOURCES = "processResources";
 
   /**
    * Create the plugin.
@@ -59,6 +60,7 @@ public class JavaInDockerPlugin implements Plugin<Project> {
       task.setGroup(TASK_GROUP);
       task.dependsOn(
         target.getTasks().getByName(TASK_COMPILE_JAVA),
+        target.getTasks().getByName(TASK_PROCESS_RESOURCES),
         target.getTasks().getByName(TASK_REMOVE_CONTAINER),
         target.getTasks().getByName(TASK_STOP_SERVICE)
       );
