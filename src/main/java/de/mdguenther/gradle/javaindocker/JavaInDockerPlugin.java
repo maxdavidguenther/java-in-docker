@@ -39,6 +39,7 @@ public class JavaInDockerPlugin implements Plugin<Project> {
     final JavaInDockerExtension extension = target.getExtensions()
       .create("javaInDocker", JavaInDockerExtension.class);
     extension.getDockerComposeFile().convention("docker-compose.yml");
+    extension.getAdditionalDockerRunArgs().convention(List.of("--service-ports"));
     if (!extension.getContainerName().isPresent()) {
       extension.getContainerName().set(extension.getServiceName());
     }
@@ -70,7 +71,6 @@ public class JavaInDockerPlugin implements Plugin<Project> {
       task.getAdditionalDockerRunArgs().set(extension.getAdditionalDockerRunArgs());
       task.getContainerBuildDir().convention("/build");
       task.getContainerGradleUserHome().convention("/gradle");
-      task.getAdditionalDockerRunArgs().convention(List.of("--service-ports"));
 
       if (!task.getMainClassName().isPresent()) {
         final String mainClassName = tryDetectMainClassName(target);
