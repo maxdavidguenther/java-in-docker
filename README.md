@@ -45,7 +45,7 @@ Once you are done developing you can simply:
  * `javaInDocker.additionalJavaArgs` (default: `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005` for Java remote debugging on port `5005`) additional arguments passed to the `java` executable.
 
 All in all the commandline executed by the task `runInDocker` should look like this:
-```shell
+```bash
 docker compose run \
   --rm \
   ${javaInDocker.additionalDockerRunArgs} \
