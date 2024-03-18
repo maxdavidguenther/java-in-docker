@@ -31,7 +31,7 @@ test {
 
 
 group = 'de.mdguenther.gradle'
-version = '0.0.3-SNAPSHOT'
+version = '0.0.3'
 
 publishing {
   repositories {
