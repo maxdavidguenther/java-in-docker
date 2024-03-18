@@ -97,7 +97,8 @@ public abstract class JavaInDockerTask extends Exec {
    * Create the task.
    */
   @Inject
-  protected JavaInDockerTask() { }
+  @SuppressWarnings("java:S5993") // constructor must be public in conjunction with @Inject
+  public JavaInDockerTask() { }
 
   @Override
   public void exec() {
