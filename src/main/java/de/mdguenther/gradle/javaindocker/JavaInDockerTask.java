@@ -85,6 +85,14 @@ public abstract class JavaInDockerTask extends Exec {
   public abstract Property<String> getContainerGradleUserHome();
 
   /**
+   * Any additional args that should be passed to the {@code java} executable.
+   *
+   * @return the additional args
+   */
+  @Input()
+  public abstract ListProperty<String> getAdditionalJavaArgs();
+
+  /**
    * Create the task.
    */
   @Inject
@@ -118,6 +126,7 @@ public abstract class JavaInDockerTask extends Exec {
     args.add(getServiceName().get());
 
     args.add("java");
+    args.addAll(getAdditionalJavaArgs().get());
     args.add("-cp");
 
     final String gradleDir = getProject().getGradle().getGradleUserHomeDir().getAbsolutePath();
