@@ -32,7 +32,7 @@ public class JavaInDockerPlugin implements Plugin<Project> {
   /**
    * Create the plugin.
    */
-  public JavaInDockerPlugin() { }
+  public JavaInDockerPlugin() { /* default constructor is customary for plugins */ }
 
   @Override
   public void apply(final Project target) {

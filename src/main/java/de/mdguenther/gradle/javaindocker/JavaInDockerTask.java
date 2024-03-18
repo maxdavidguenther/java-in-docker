@@ -19,6 +19,7 @@ import org.gradle.api.tasks.SourceSet;
 /**
  * Runs Java in a Docker Compose container via {@code docker compose run}.
  */
+@SuppressWarnings("java:S110") // can't do anything about Gradle class inheritance
 public abstract class JavaInDockerTask extends Exec {
 
   /**
@@ -96,7 +97,7 @@ public abstract class JavaInDockerTask extends Exec {
    * Create the task.
    */
   @Inject
-  public JavaInDockerTask() { }
+  protected JavaInDockerTask() { }
 
   @Override
   public void exec() {
