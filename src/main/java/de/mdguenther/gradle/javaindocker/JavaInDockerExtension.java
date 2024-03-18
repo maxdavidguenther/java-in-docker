@@ -51,7 +51,7 @@ public interface JavaInDockerExtension {
 
   /**
    * Any additional args that should be passed to the {@code java} executable. Default is
-   * {@code -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"} for debugging on
+   * {@code -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005} for debugging on
    * port {@code 5005}.
    *
    * @return the additional args

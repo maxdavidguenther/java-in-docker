@@ -42,6 +42,7 @@ Once you are done developing you can simply:
  * `javaInDocker.dockerComposeFile` (default: `docker-compose.yml`) the path to the docker compose file relative to the project directory.
  * `javaInDocker.containerName` (default: `${javaInDocker.serviceName}`) the name of the container. Any containers with this name are removed before the `javaInDocker` task is run.
  * `javaInDocker.additionalDockerRunArgs` (default: `--service-ports`) additional arguments passed via `docker compose run`.
+ * `javaInDocker.additionalJavaArgs` (default: `-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005` for Java remote debugging on port `5005`) additional arguments passed to the `java` executable.
 
 All in all the commandline executed by the task `runInDocker` should look like this:
 ```shell
@@ -52,6 +53,7 @@ docker compose run \
   -v "~/.gradle:/gradle" \
   run "${javaInDocker.serviceName}" \
   java \
+  ${javaInDocker.additionalJavaArgs} \
   -cp "/build/classes/java:/build/resources:${classpath}" \
   "${mainClassName}"
 ```
